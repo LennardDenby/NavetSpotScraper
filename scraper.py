@@ -4,6 +4,7 @@ import requests
 import datetime
 import secret
 import time
+import pprint
 
 
 USER = secret.USER
@@ -53,20 +54,19 @@ def getAvailableRegistrations(eventURLs: str):
         regDict[eventName] = int(availablePlaces[0])
     
     return regDict
-        
+'''     
 def sendNotification(message: str):
     requests.post("https://api.pushover.net/1/messages.json", data = {
         "token": secret.API,
         "user": secret.USER,
         "message": message
-    })
+    })'''
 
 def formatMessage(regDict: dict):
     for value in regDict:
         if regDict[value] > 0:
             message = f"{regDict[value]} plass(er) på {value}"
-            print(message)
-            sendNotification(message)
+            #sendNotification(message)
     
 def main():
     URL = "https://ifinavet.no/arrangementer/2023/host/"
@@ -75,14 +75,19 @@ def main():
     r = requests.get(URL)
     soup = BeautifulSoup(r.content, "html.parser")
     
-    eventLinks = findEventLinks(soup, baseURL, 15)
+    eventLinks = findEventLinks(soup, baseURL, 13)
     regDict = getAvailableRegistrations(eventLinks)
+
+    pp = pprint.PrettyPrinter(depth=4)
+    pp.pprint(regDict)
 
     formatMessage(regDict)
     
+    
+    
 if __name__ == '__main__':
     schedule = Scheduler()
-    schedule.minutely(datetime.time(minute = 5), main)
+    schedule.minutely(datetime.time(second = 15), main)
     
     while True:
         schedule.exec_jobs()
