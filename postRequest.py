@@ -3,11 +3,22 @@ import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 
+def loginStatus(driver: uc.Chrome):
+    user = driver.find_element(By.XPATH, '//*[@id="menu"]/ul/li[6]/a')
+    
+    if user.text == "Logg inn":
+        print("No user logged inn")
+        return False
+    else:
+        print(f"Logged in as {user.text}")
+        return True
+        
+def logout(driver: uc.Chrome):
+    clickHref(driver, "Logg ut")
+    print("Logged out user")
 
 def login(driver: uc.Chrome):
-    
-    
-    driver.get("https://ifinavet.no/login/")
+    clickHref(driver, "Logg inn")
     
     userInp = driver.find_element(By.ID, "LoginName")
     passInp = driver.find_element(By.ID, "Password")
@@ -18,23 +29,30 @@ def login(driver: uc.Chrome):
         
     logginButton.click()
     
-    while True:
-        pass
-    #driver.quit()
+    print(f"Logging in as {secret.username}")
+    
+
+def clickHref(driver: uc.Chrome, href: str):
+    hrefLink = driver.find_element(By.LINK_TEXT, href)
+    hrefLink.click()
     
 def main():
     options = webdriver.ChromeOptions()
-    #options.add_argument("--proxy-server=84.247.50.78:8443")
-    #options.add_argument("--user-data-dir=C:\\Users\\Lennard\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
-    #options.add_argument("--profile-directory=Profile 4")
-    #options.add_argument("--disable-blink-features=AutomationControlled") 
-    #options.add_experimental_option("excludeSwitches", ["enable-automation"]) 
-    #options.add_experimental_option("useAutomationExtension", False) 
+    options.add_argument("--user-data-dir=C:\\Users\\Lennard\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
+    options.add_argument("--profile-directory=Profile 4")
     
-    driver = webdriver.Chrome(
+    driver = uc.Chrome(
         options = options
     )
-    login(driver)
+    
+    driver.get("https://ifinavet.no/login/")
+    
+    if not loginStatus(driver):
+        login(driver)
+    
+    clickHref("Arrangementer")
+    while True:
+        pass
 
 if __name__ == '__main__':
     main()
