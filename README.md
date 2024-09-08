@@ -1,8 +1,13 @@
 # NavetSpotScraper
-Scraper ifinavet.no for å sjekke om det er ledige plasser.
 
-Kan sjekke arrangement n antall dager frem i tid.
+A Python script designed to scrape the *ifinavet.no* website for available spots in activities, sending notifications when spaces open up. It allows users to check for availability across multiple days.
 
-Kan sende notification til mobilen når en plass blir ledig.
+## ⚠️ Important Notice
+This project is **outdated** and no longer works due to changes on the *ifinavet.no* website.
 
-Bruker Scheduler for å kjøre hvert n minutt/sekund.
+## Features:
+- Checks availability of spots on *ifinavet.no*.
+- Schedules recurring checks.
+- Sends mobile notifications.
+
+---
